@@ -1,0 +1,217 @@
+:root {
+  --men-primary: #002772;
+  --women-primary: #720060;
+  --men-background: #d6e6ff;
+  --women-background: #fde2ff;
+  --dark: #1e1e1e;
+  --secondary-dark: #3f3f3f;
+  --gray: #dcdcdc;
+  --white: #ffffff;
+
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+
+  --card-width: min(81vw, 720px);
+}
+
+/* ---- Themes: set on the page shell, inherited by every card -------------- */
+.theme-men {
+  --theme-primary: var(--men-primary);
+  --theme-bg: var(--men-background);
+}
+
+.theme-women {
+  --theme-primary: var(--women-primary);
+  --theme-bg: var(--women-background);
+}
+
+/* Used while the first product loads, for "unavailable" and for errors. */
+.theme-neutral {
+  --theme-primary: var(--dark);
+  --theme-bg: var(--gray);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--dark);
+  background: var(--white);
+}
+
+h1,
+p {
+  margin: 0;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- Card shell shared by product / skeleton / unavailable / error -------- */
+.panel {
+  position: relative;
+  width: var(--card-width);
+  min-height: calc(var(--card-width) * 303 / 540); /* the design card is 540 x 303 */
+  font-size: calc(var(--card-width) / 54); /* 1em = 10px of the design */
+  background: var(--white);
+  border-radius: 0.6em;
+  box-shadow: 0 0.4em 0.9em rgb(0 0 0 / 0.22), 0 0.1em 0.25em rgb(0 0 0 / 0.18);
+  animation: fade-in 0.2s ease-out both;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* ---- Two-column product layout (card and skeleton share it) -------------- */
+.product {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+}
+
+.product__media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.4em 1.5em;
+}
+
+.product__image {
+  width: 100%;
+  max-width: 16em;
+  height: 19.8em;
+  object-fit: contain;
+}
+
+.product__body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 2.6em 3.1em 2.4em 0;
+}
+
+.product__footer {
+  margin-top: auto;
+  padding-top: 0.86em;
+  border-top: 1px solid var(--gray);
+}
+
+.product__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1em;
+  margin-top: 0.74em;
+}
+
+/* ---- Buttons ------------------------------------------------------------- */
+.btn {
+  min-height: 2.1em;
+  padding: 0 1em;
+  font: inherit;
+  font-size: 1.05em;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--theme-primary);
+  background: var(--white);
+  border: max(1px, 0.14em) solid var(--theme-primary);
+  border-radius: 0.2em;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.btn:hover {
+  background: color-mix(in srgb, var(--theme-bg) 70%, var(--white));
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--theme-primary);
+  outline-offset: 3px;
+}
+
+.btn--solid {
+  color: var(--white);
+  background: var(--theme-primary);
+}
+
+.btn--solid:hover {
+  background: color-mix(in srgb, var(--theme-primary) 82%, var(--white));
+}
+
+/* ---- Narrow screens: only here does the card stack vertically ------------
+   The design (667px wide) is still two columns, and the card keeps >= 96% of
+   its design size down to 640px, so the horizontal layout holds until then. */
+@media (max-width: 639px) {
+  .panel {
+    width: 100%;
+    max-width: 560px;
+    min-height: 0;
+    font-size: 14px;
+  }
+
+  .product {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .product__media {
+    padding: 2em 1.7em 0;
+  }
+
+  .product__image {
+    max-width: none;
+    height: 17em;
+  }
+
+  .product__body {
+    padding: 1.7em 1.7em 2em;
+  }
+
+  .btn {
+    min-height: 3em;
+  }
+}
+
+@media (max-width: 380px) {
+  .product__actions {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
